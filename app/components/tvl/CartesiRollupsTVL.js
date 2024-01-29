@@ -101,6 +101,14 @@ async function getDappsWithERC20Tokens(provider) {
     }
   });
 
+  //DEBUG
+  let i=0;
+  for (const key in dapps) {
+    i++;
+  }
+  console.log("#DAPPS=" + i);
+  //END DEBUG
+
   return dapps;
 }
 
@@ -150,25 +158,27 @@ async function computeTVL(dapps, erc20TokensInfo, erc20Prices) {
       const tokenPrice = erc20Prices[token];
       const rawBalance = await erc20TokensInfo[token].contract.balanceOf(dappAddress);
       const balance = formatUnits(rawBalance, erc20TokensInfo[token].decimals);
+      console.log("token=" + token + " price=" + tokenPrice + " balance=" + balance);
       tvl+=tokenPrice*Number(balance);
     };
   }
-  return tvl.toFixed(2);
+  return (tvl>0) ? tvl.toFixed(2) : tvl;
 }
 
 async function getERC20Prices(erc20TokensInfo) {
   let prices = {};
 
-  let symbols='';
+  let symbols
   let i=0;
   for (let key in erc20TokensInfo) {
     const erc20Info = erc20TokensInfo[key];
-    const symbol = erc20Info.symbol;
+    const currentSymbol = erc20Info.symbol;
     if (i==0) {
-      symbols=symbol;
+      symbols=currentSymbol;
     } else {
-      symbols+=',' + symbol;
+      symbols=symbols + ',' + currentSymbol;
     }
+    i++;
   }
 
   let json;
@@ -183,13 +193,15 @@ async function getERC20Prices(erc20TokensInfo) {
     });
     json = await response.json();
   } catch (err) {
-    throw new Error("Error when retrieving prices for " + symbols, err);
+    throw new Error("Error reading prices:" + err);
   }
 
   for (let erc20Address in erc20TokensInfo) {
     const symbol = erc20TokensInfo[erc20Address].symbol;
-    const usdPrice = json.data[symbol][0].quote.USD.price;
-
+    let usdPrice = 0;
+    if (json.data[symbol].length==1) {
+      usdPrice = json.data[symbol][0].quote.USD.price;
+    }
     prices[erc20Address] = usdPrice;
   }
 
@@ -201,12 +213,13 @@ async function getTVL() {
 
   const dapps = await getDappsWithERC20Tokens(provider);
   const uniqueERC20Tokens = getUniqueERC20Tokens(dapps);
+  console.log("#ERC2=" + uniqueERC20Tokens.length);
   const erc20TokensInfo = await getERC20Info(provider, uniqueERC20Tokens);
   let erc20Prices={};
   try {
     erc20Prices = await getERC20Prices(erc20TokensInfo);
   } catch (err) {
-    console.log("ERROR:" + err);
+    console.log(err);
     return;
   }
   
