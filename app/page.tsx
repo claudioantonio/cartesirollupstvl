@@ -10,7 +10,7 @@ const Home = () => {
       <div className="value"><Tvl/></div>
     </div>
     <footer>
-      &copy; 2023 All rights reserved. | <a href="https://github.com/yourrepository">GitHub Repository</a>
+      &copy; 2023 All rights reserved. | <a href="https://github.com/claudioantonio/cartesirollupstvl">GitHub Repository</a>
     </footer>
   </main>
   )
