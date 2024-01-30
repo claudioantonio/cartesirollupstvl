@@ -165,9 +165,8 @@ async function computeTVL(dapps, erc20TokensInfo, erc20Prices) {
   return (tvl>0) ? tvl.toFixed(2) : tvl;
 }
 
-async function getERC20Prices(erc20TokensInfo) {
-  let prices = {};
-
+function getUniqueSymbolsAsString(erc20TokensInfo) {
+  const COMMA_SEPARATOR = ',';
   let symbols
   let i=0;
   for (let key in erc20TokensInfo) {
@@ -176,10 +175,17 @@ async function getERC20Prices(erc20TokensInfo) {
     if (i==0) {
       symbols=currentSymbol;
     } else {
-      symbols=symbols + ',' + currentSymbol;
+      symbols+=COMMA_SEPARATOR + currentSymbol;
     }
     i++;
   }
+  return symbols;
+}
+
+async function getERC20Prices(erc20TokensInfo) {
+  let prices = {};
+
+  const symbols = getUniqueSymbolsAsString(erc20TokensInfo);
 
   let json;
   try {
@@ -224,7 +230,9 @@ async function getTVL() {
   }
   
   const tvl = await computeTVL(dapps, erc20TokensInfo, erc20Prices);
-  return tvl;
+  return {tvl, erc20TokensInfo , erc20Prices};
 }
+
+
 
 export default getTVL;
