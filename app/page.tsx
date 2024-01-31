@@ -1,36 +1,31 @@
 import React from 'react'
 import Tvl from './components/tvl/Tvl'
-import { Box, Card, CardBody, CardHeader, Flex, Heading, flexbox } from "@chakra-ui/react"
+import { Badge, Box, Divider, Flex, Heading } from "@chakra-ui/react"
 import { FaGithub } from "react-icons/fa";
+import { Text } from "@chakra-ui/react"
 
 const Home = () => {
   return (
-    <Box display="flex" flexDirection="column" justifyContent="space-around">
+    <Flex minWidth='max-content' alignItems='center' gap='2' direction="column">
+
       <header>
         <Box display="flex" justifyContent="space-between">
-          <div>Cartesi Rollups TVL <div className="badge">alfa</div></div>
-          <FaGithub />
+          <Heading p="2">Cartesi Rollups TVL</Heading>
+          <Badge colorScheme='yellow'>alfa</Badge>
+          <FaGithub size={30}/>
         </Box>
       </header>
 
-      <Box display="flex" w="100" justifyContent="space-around">
-        <Card>
-          <CardHeader>
-            <Heading size='md'>Value locked in all Cartesi DApps on Ethereum Mainnet</Heading>
-          </CardHeader>
+      <Divider/>
 
-          <CardBody>
-            <div className="container">
-              <Tvl/>
-            </div>
-          </CardBody>
-        </Card>
+      <Box>
+        <Tvl/>
       </Box>
 
       <footer>
-        &copy; 2023 All rights reserved. | <a href="https://github.com/claudioantonio/cartesirollupstvl">GitHub Repository</a>
+        <Text align="center" mt="5">&copy; 2023 All rights reserved.</Text>
       </footer>
-    </Box>
+    </Flex>
   )
 }
 
