@@ -5,7 +5,7 @@ import { FaGithub } from "react-icons/fa";
 
 const Home = () => {
   return (
-    <Box display="flex" flexDirection="column" mr="50" ml="50" mt="10">
+    <Box display="flex" flexDirection="column" justifyContent="space-around">
       <header>
         <Box display="flex" justifyContent="space-between">
           <div>Cartesi Rollups TVL <div className="badge">alfa</div></div>
@@ -16,7 +16,7 @@ const Home = () => {
       <Box display="flex" w="100" justifyContent="space-around">
         <Card>
           <CardHeader>
-            <Heading size='md'>Client Report</Heading>
+            <Heading size='md'>Value locked in all Cartesi DApps on Ethereum Mainnet</Heading>
           </CardHeader>
 
           <CardBody>
