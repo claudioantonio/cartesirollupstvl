@@ -11,9 +11,14 @@ interface TvlProps {
 
 const Tvl = async () => {
   const {tvl, erc20TokensInfo, erc20Prices} = await getTVL() as TvlProps;
-  //const tvl=10;
+  //const tvl=10000000;
   //const erc20TokensInfo: { [key: string]: { symbol: string } } = { "a": {"symbol":"CTSI"}, "b":{"symbol":"weth"} };
   //const erc20Prices: { [key: string]: number } = { "a": 1, "b":2 };
+
+  const USDollarFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 
   return (
     <Box>
@@ -26,7 +31,7 @@ const Tvl = async () => {
               <Text>MAINNET</Text>
             </VStack>
             <VStack>
-              <Heading>US${tvl}</Heading>
+              <Heading>{USDollarFormatter.format(tvl)}</Heading>
               <Text>* CoinMarketCap v2 API for prices</Text>
             </VStack>
           </HStack>
